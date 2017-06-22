@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour {
 	public Material[] blockColor;
 
 	float mouseWheelValue;
+	public bool isPlaceable;
+	bool foundationPlaced;
 
 	GameObject currentBlock;
 	GameObject currentIcon;
@@ -46,6 +48,13 @@ public class PlayerController : MonoBehaviour {
 			IdentifyBlock();
 			mouseDown = true;
 		} else {
+
+			if(currentBlock != null){
+				
+				if (blockContainer.transform.childCount >= 1 && currentBlock.transform.Find("Detector1").gameObject.GetComponent<Detector>().isColliding == true || currentBlock.transform.Find("Detector2").gameObject.GetComponent<Detector>().isColliding == true){
+					Destroy(currentBlock);
+				}
+			}
 			mouseDown = false;
 			currentBlock = null;
 		}
@@ -69,7 +78,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void DragBlock(){
-		currentBlock.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));	
+		currentBlock.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
 	}
 
 
