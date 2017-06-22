@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour {
 
 			if(currentBlock != null){
 				
-				if (blockContainer.transform.childCount >= 1 && currentBlock.transform.Find("Detector1").gameObject.GetComponent<Detector>().isColliding == true || currentBlock.transform.Find("Detector2").gameObject.GetComponent<Detector>().isColliding == true){
+				if (blockContainer.transform.childCount >= 1 && currentBlock.transform.Find("Detector1").gameObject.GetComponent<Detector>().isColliding == false || currentBlock.transform.Find("Detector2").gameObject.GetComponent<Detector>().isColliding == false){
 					Destroy(currentBlock);
 				}
 			}

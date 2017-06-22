@@ -6,13 +6,11 @@ public class Detector : MonoBehaviour {
 
 	public bool isColliding;
 
-	void OnCollisionEnter(Collision col){
+	void OnTriggerStay(Collider col){
 		
-		isColliding = true;
-	}
-
-	void OnCollisionExit(Collision col){
-		//isColliding = false;
+		if (col.gameObject != gameObject.transform.parent){  
+			isColliding = true;
+		}
 	}
 
 }
