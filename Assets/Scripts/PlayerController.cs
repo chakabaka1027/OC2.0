@@ -78,15 +78,15 @@ public class PlayerController : MonoBehaviour {
 			currentIcon = hit.collider.gameObject;
 			if(currentIcon != null && Input.GetMouseButtonDown(0)){
 				if (currentIcon.transform.name == "Computer Icon"){
-					CreateBlock(0);
+					CreateBlock(0, currentIcon);
 				} else if (currentIcon.transform.name == "Art Icon"){
-					CreateBlock(1);
+					CreateBlock(1, currentIcon);
 				} else if (currentIcon.transform.name == "Exercise Icon"){
-					CreateBlock(2);
+					CreateBlock(2, currentIcon);
 				} else if (currentIcon.transform.name == "Game Icon"){
-					CreateBlock(3);
+					CreateBlock(3, currentIcon);
 				} else if (currentIcon.transform.name == "Music Icon"){
-					CreateBlock(4);
+					CreateBlock(4, currentIcon);
 				}
 			}
 		} else {
@@ -95,8 +95,13 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
-	void CreateBlock(int blockIndex){
-		Instantiate(blocks[blockIndex], Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Quaternion.identity);
+	void CreateBlock(int blockIndex, GameObject currentIcon){
+		GameObject block = Instantiate(blocks[blockIndex], Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Quaternion.identity) as GameObject;
+		if (currentIcon.GetComponent<Icons>().size == Icons.Size.Small){
+			block.transform.localScale /= 1.75f;
+		} else if (currentIcon.GetComponent<Icons>().size == Icons.Size.Large){
+			block.transform.localScale *= 1.75f;
+		}
 	}
 
 	void IncreaseIconScale(){

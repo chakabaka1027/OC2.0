@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Icons : MonoBehaviour {
 
-	enum Size {Small, Medium, Large};
-	Size size;
+	public enum Size {Small, Medium, Large};
+	public Size size;
 
 	void Start(){
 		size = Size.Medium;
