@@ -5,17 +5,36 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
 	public LayerMask blocks;
+	public LayerMask icons;
 
-	float distance = 10;
+	float scaleValue;
 
 	GameObject currentBlock;
-
+	GameObject currentIcon;
 	bool mouseDown = false;
 
 //	// Update is called once per frame
 	void Update () {
 
-		//detect mouse input
+		IdentifyIcon();
+
+		//detect mousewheel
+		if (Input.GetAxis("Mouse ScrollWheel") > 0){
+			scaleValue++;
+
+			if(scaleValue > 6){
+				IncreaseIconScale();
+			}
+		}
+		if (Input.GetAxis("Mouse ScrollWheel") < 0){
+			scaleValue--;
+
+			if(scaleValue < -6){
+				DecreaseIconScale();
+			}
+		}
+
+		//detect mouse clicks
 		if(Input.GetMouseButton(0)){
 			IdentifyBlock();
 			mouseDown = true;
@@ -28,6 +47,9 @@ public class PlayerController : MonoBehaviour {
 		if (currentBlock != null){
 			DragBlock();
 		}
+
+		scaleValue = Mathf.Clamp(scaleValue, -6, 6);
+
 
 	}
 
@@ -42,9 +64,34 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void DragBlock(){
+		currentBlock.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));	
+	}
 
-		currentBlock.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
-		
+
+	void IdentifyIcon(){
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
+
+		if(Physics.Raycast(ray, out hit, Mathf.Infinity, icons)){
+			currentIcon = hit.collider.gameObject;
+		} else {
+			currentIcon = null;
+		}
+
+	}
+
+	void IncreaseIconScale(){
+		if(currentIcon != null){
+			currentIcon.transform.localScale *= 1.75f;
+			scaleValue = 0;
+		}
+	}
+
+	void DecreaseIconScale(){
+		if(currentIcon != null){
+			currentIcon.transform.localScale /= 1.75f;
+			scaleValue = 0;
+		}
 	}
 
 
