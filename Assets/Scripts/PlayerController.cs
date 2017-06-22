@@ -8,12 +8,15 @@ public class PlayerController : MonoBehaviour {
 	public LayerMask iconLayer;
 
 	public GameObject[] blocks;
+	public Material[] blockColor;
 
 	float mouseWheelValue;
 
 	GameObject currentBlock;
 	GameObject currentIcon;
 	bool mouseDown = false;
+
+	public GameObject blockContainer;
 
 //	// Update is called once per frame
 	void Update () {
@@ -95,13 +98,31 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
-	void CreateBlock(int blockIndex, GameObject currentIcon){
-		GameObject block = Instantiate(blocks[blockIndex], Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Quaternion.identity) as GameObject;
+	void CreateBlock(int colorIndex, GameObject currentIcon){
+
 		if (currentIcon.GetComponent<Icons>().size == Icons.Size.Small){
-			block.transform.localScale /= 1.75f;
+			GameObject block = Instantiate(blocks[0], Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Quaternion.identity) as GameObject;
+			block.GetComponent<MeshRenderer>().material.color = blockColor[colorIndex].color;
+			for(int i = 0; i < block.transform.childCount; i++){
+				block.transform.GetChild(i).GetComponent<MeshRenderer>().material.color = blockColor[colorIndex].color;
+			}
+			block.transform.parent = blockContainer.transform;
+		} else if (currentIcon.GetComponent<Icons>().size == Icons.Size.Medium){
+			GameObject block = Instantiate(blocks[1], Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Quaternion.identity) as GameObject;
+			block.GetComponent<MeshRenderer>().material.color = blockColor[colorIndex].color;
+			for(int i = 0; i < block.transform.childCount; i++){
+				block.transform.GetChild(i).GetComponent<MeshRenderer>().material.color = blockColor[colorIndex].color;
+			}
+			block.transform.parent = blockContainer.transform;
 		} else if (currentIcon.GetComponent<Icons>().size == Icons.Size.Large){
-			block.transform.localScale *= 1.75f;
+			GameObject block = Instantiate(blocks[2], Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Quaternion.identity) as GameObject;
+			block.GetComponent<MeshRenderer>().material.color = blockColor[colorIndex].color;
+			for(int i = 0; i < block.transform.childCount; i++){
+				block.transform.GetChild(i).GetComponent<MeshRenderer>().material.color = blockColor[colorIndex].color;
+			}
+			block.transform.parent = blockContainer.transform;
 		}
+
 	}
 
 	void IncreaseIconScale(){
