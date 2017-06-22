@@ -12,6 +12,15 @@ public class Snap : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Vector3 currentPos = transform.position;
-		transform.position = new Vector3(Mathf.Round(currentPos.x), Mathf.Round(currentPos.y), Mathf.Round(currentPos.z));	
+
+		if(transform.name == "Block Small(Clone)"){
+			transform.position = new Vector3(Mathf.Round(currentPos.x*2)/2, Mathf.Round(currentPos.y), Mathf.Round(currentPos.z));	
+		}
+		if(transform.name == "Block Medium(Clone)"){
+			transform.position = new Vector3(Mathf.Round(currentPos.x*2)/2, Mathf.Round(currentPos.y), Mathf.Round(currentPos.z));	
+		}
+		if(transform.name == "Block Large(Clone)"){
+			transform.position = new Vector3(Mathf.Round(currentPos.x*2)/2, Mathf.Round(currentPos.y), Mathf.Round(currentPos.z));	
+		}
 	}
 }
