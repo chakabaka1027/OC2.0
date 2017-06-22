@@ -4,13 +4,38 @@ using UnityEngine;
 
 public class Icons : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
+	enum Size {Small, Medium, Large};
+	Size size;
+
+	void Start(){
+		size = Size.Medium;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	public float iconScaleValue = 2;
+
+	public void UpdateSizeValues(){
+		if(iconScaleValue == 1){
+			size = Size.Small;
+		} else if(iconScaleValue == 2){
+			size = Size.Medium;
+		} else if(iconScaleValue == 3){
+			size = Size.Large;
+		}
+	}
+
+	public void IncreaseScale(){
+		if(size != Size.Large){
+			iconScaleValue ++;
+			transform.localScale *= 1.75f;
+			UpdateSizeValues();
+		}
+	}
+
+	public void DecreaseScale(){
+		if(size != Size.Small){
+			iconScaleValue --;
+			transform.localScale /= 1.75f;
+			UpdateSizeValues();
+		}
 	}
 }

@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-	public LayerMask blocks;
-	public LayerMask icons;
+	public LayerMask blockLayer;
+	public LayerMask iconLayer;
 
-	float scaleValue;
+	public GameObject[] blocks;
+
+	float mouseWheelValue;
 
 	GameObject currentBlock;
 	GameObject currentIcon;
@@ -20,16 +22,18 @@ public class PlayerController : MonoBehaviour {
 
 		//detect mousewheel
 		if (Input.GetAxis("Mouse ScrollWheel") > 0){
-			scaleValue++;
+			mouseWheelValue++;
 
-			if(scaleValue > 6){
+			//increase icon scale
+			if(mouseWheelValue > 6){
 				IncreaseIconScale();
 			}
 		}
 		if (Input.GetAxis("Mouse ScrollWheel") < 0){
-			scaleValue--;
+			mouseWheelValue--;
 
-			if(scaleValue < -6){
+			//decrease icon scale
+			if(mouseWheelValue < -6){
 				DecreaseIconScale();
 			}
 		}
@@ -48,16 +52,14 @@ public class PlayerController : MonoBehaviour {
 			DragBlock();
 		}
 
-		scaleValue = Mathf.Clamp(scaleValue, -6, 6);
-
-
+		mouseWheelValue = Mathf.Clamp(mouseWheelValue, -6, 6);
 	}
 
 	void IdentifyBlock(){
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
 
-		if(Physics.Raycast(ray, out hit, Mathf.Infinity, blocks) && !mouseDown){
+		if(Physics.Raycast(ray, out hit, Mathf.Infinity, blockLayer) && !mouseDown){
 			currentBlock = hit.collider.gameObject;
 		}
 
@@ -72,25 +74,42 @@ public class PlayerController : MonoBehaviour {
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
 
-		if(Physics.Raycast(ray, out hit, Mathf.Infinity, icons)){
+		if(Physics.Raycast(ray, out hit, Mathf.Infinity, iconLayer)){
 			currentIcon = hit.collider.gameObject;
+			if(currentIcon != null && Input.GetMouseButtonDown(0)){
+				if (currentIcon.transform.name == "Computer Icon"){
+					CreateBlock(0);
+				} else if (currentIcon.transform.name == "Art Icon"){
+					CreateBlock(1);
+				} else if (currentIcon.transform.name == "Exercise Icon"){
+					CreateBlock(2);
+				} else if (currentIcon.transform.name == "Game Icon"){
+					CreateBlock(3);
+				} else if (currentIcon.transform.name == "Music Icon"){
+					CreateBlock(4);
+				}
+			}
 		} else {
 			currentIcon = null;
 		}
 
 	}
 
+	void CreateBlock(int blockIndex){
+		Instantiate(blocks[blockIndex], Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Quaternion.identity);
+	}
+
 	void IncreaseIconScale(){
 		if(currentIcon != null){
-			currentIcon.transform.localScale *= 1.75f;
-			scaleValue = 0;
+			mouseWheelValue = 0;
+			currentIcon.GetComponent<Icons>().IncreaseScale();
 		}
 	}
 
 	void DecreaseIconScale(){
 		if(currentIcon != null){
-			currentIcon.transform.localScale /= 1.75f;
-			scaleValue = 0;
+			mouseWheelValue = 0;
+			currentIcon.GetComponent<Icons>().DecreaseScale();
 		}
 	}
 
