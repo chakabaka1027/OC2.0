@@ -51,7 +51,9 @@ public class PlayerController : MonoBehaviour {
 
 			if(currentBlock != null){
                 if(currentBlock.transform.Find("NoBuildZone").gameObject.GetComponent<NoBuildZone>().cannotBuild == true || currentBlock.transform.Find("Detector1").gameObject.GetComponent<Detector>().isColliding == false && currentBlock.transform.Find("Detector2").gameObject.GetComponent<Detector>().isColliding == false && blockContainer.transform.childCount > 1) {
-                    Destroy(currentBlock);
+                    StartCoroutine(BlockShrink(currentBlock));
+
+                    Destroy(currentBlock, .5f);
                 }
 			}
 			mouseDown = false;
@@ -113,21 +115,26 @@ public class PlayerController : MonoBehaviour {
 			block.GetComponent<MeshRenderer>().material.color = blockColor[colorIndex].color;
 			for(int i = 0; i < block.transform.childCount; i++){
 				block.transform.GetChild(i).GetComponent<MeshRenderer>().material.color = blockColor[colorIndex].color;
-			}
+				StartCoroutine(BlockGrow(block));
+            }
 			block.transform.parent = blockContainer.transform;
 		} else if (currentIcon.GetComponent<Icons>().size == Icons.Size.Medium){
 			GameObject block = Instantiate(blocks[1], Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Quaternion.identity) as GameObject;
 			block.GetComponent<MeshRenderer>().material.color = blockColor[colorIndex].color;
 			for(int i = 0; i < block.transform.childCount; i++){
 				block.transform.GetChild(i).GetComponent<MeshRenderer>().material.color = blockColor[colorIndex].color;
-			}
+				StartCoroutine(BlockGrow(block));
+
+            }
 			block.transform.parent = blockContainer.transform;
 		} else if (currentIcon.GetComponent<Icons>().size == Icons.Size.Large){
 			GameObject block = Instantiate(blocks[2], Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Quaternion.identity) as GameObject;
 			block.GetComponent<MeshRenderer>().material.color = blockColor[colorIndex].color;
 			for(int i = 0; i < block.transform.childCount; i++){
 				block.transform.GetChild(i).GetComponent<MeshRenderer>().material.color = blockColor[colorIndex].color;
-			}
+				StartCoroutine(BlockGrow(block));
+
+            }
 			block.transform.parent = blockContainer.transform;
 		}
 
@@ -146,6 +153,43 @@ public class PlayerController : MonoBehaviour {
 			currentIcon.GetComponent<Icons>().DecreaseScale();
 		}
 	}
+
+    IEnumerator BlockGrow(GameObject block) {
+        float time = .15f;
+        float percent = 0;
+        float speed = 1 / time;
+        Vector3 size = gameObject.transform.localScale;
+
+        if (block.transform.name == "Block Small(Clone)") {
+            size = new Vector3(1, 1, 1);
+        } else if (block.transform.name == "Block Medium(Clone)") {
+            size = new Vector3(2, 1, 1);
+        } else if (block.transform.name == "Block Large(Clone)") {
+            size = new Vector3(3, 1, 1);
+        }
+
+        while (percent < 1) {
+            percent += Time.deltaTime * speed;
+            block.transform.localScale = Vector3.Lerp(Vector3.zero, size, percent);
+            yield return null;
+        }
+    }
+
+    IEnumerator BlockShrink(GameObject block) {
+        float time = .1f;
+        float percent = 0;
+        float speed = 1 / time;
+        Vector3 size = gameObject.transform.localScale;
+
+        
+
+
+        while(percent < 1) {
+            percent += Time.deltaTime * speed;
+            block.transform.localScale = Vector3.Lerp(size, Vector3.zero, percent);
+            yield return null;
+        }
+    }
 
 
 }
