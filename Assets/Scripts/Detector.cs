@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class Detector : MonoBehaviour {
 
-	public bool isColliding;
+	public bool isColliding = false;
 
-	void OnTriggerStay(Collider col){
+	void OnTriggerStay(Collider other){
 		
-		if (col.gameObject != gameObject.transform.parent){  
+		if(other.gameObject != gameObject.transform.parent.gameObject && other.gameObject.tag != "Icon") {  
 			isColliding = true;
-		}
+		} 
+  
+	}
+
+    void OnTriggerExit(Collider col){
+		
+		if(col.gameObject != gameObject.transform.parent.gameObject) {  
+			isColliding = false;
+		} 
 	}
 
 }

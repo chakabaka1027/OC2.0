@@ -27,10 +27,10 @@ public class Parallax : MonoBehaviour {
 	void LateUpdate () {
 
 		horizontalLookRotation += Input.GetAxis("Mouse X") * mouseSensitivity;
-		horizontalLookRotation = Mathf.Clamp(horizontalLookRotation, -3.5f, 3.5f);
+		horizontalLookRotation = Mathf.Clamp(horizontalLookRotation, -5.5f, 5.5f);
 
 		verticalLookRotation += Input.GetAxis("Mouse Y") * mouseSensitivity;
-		verticalLookRotation = Mathf.Clamp(verticalLookRotation, -3.5f, 3.5f);
+		verticalLookRotation = Mathf.Clamp(verticalLookRotation, -5.5f, 5.5f);
 
 
 		horizontalMovement += Input.GetAxis("Mouse X") * .05f;
