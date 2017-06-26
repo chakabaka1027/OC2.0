@@ -33,10 +33,10 @@ public class Parallax : MonoBehaviour {
 		verticalLookRotation = Mathf.Clamp(verticalLookRotation, -5.5f, 5.5f);
 
 
-		horizontalMovement += Input.GetAxis("Mouse X") * .05f;
+		horizontalMovement += Input.GetAxis("Mouse X") * .035f;
 		horizontalMovement = Mathf.Clamp(horizontalMovement, -3f, 3f);
 
-		verticalMovement += Input.GetAxis("Mouse Y") * .05f;
+		verticalMovement += Input.GetAxis("Mouse Y") * .035f;
 		verticalMovement = Mathf.Clamp(verticalMovement, -2f, 2f);
 
 		Camera.main.transform.localEulerAngles = new Vector3(verticalLookRotation, -horizontalLookRotation, 0);
