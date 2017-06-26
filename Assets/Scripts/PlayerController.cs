@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void CreateBlock(int colorIndex, GameObject currentIcon){
-
+        
 		if (currentIcon.GetComponent<Icons>().size == Icons.Size.Small){
 			GameObject block = Instantiate(blocks[0], Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Quaternion.identity) as GameObject;
 			block.GetComponent<MeshRenderer>().material.color = blockColor[colorIndex].color;
@@ -133,7 +133,6 @@ public class PlayerController : MonoBehaviour {
 			for(int i = 0; i < block.transform.childCount; i++){
 				block.transform.GetChild(i).GetComponent<MeshRenderer>().material.color = blockColor[colorIndex].color;
 				StartCoroutine(BlockGrow(block));
-
             }
 			block.transform.parent = blockContainer.transform;
 		}
@@ -180,9 +179,6 @@ public class PlayerController : MonoBehaviour {
         float percent = 0;
         float speed = 1 / time;
         Vector3 size = gameObject.transform.localScale;
-
-        
-
 
         while(percent < 1) {
             percent += Time.deltaTime * speed;
